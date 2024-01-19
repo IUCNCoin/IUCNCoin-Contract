@@ -1,4 +1,8 @@
 /**
+ *Submitted for verification at Etherscan.io on 2023-05-14
+*/
+
+/**
  *Submitted for verification at BscScan.com on 2023-04-17
 */
 
@@ -147,16 +151,16 @@ contract IUCN is Context, IBEP20, Ownable {
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
 
     uint256 public swapTokensAtAmount = 1e5 * 10**18;
-    uint256 public maxBuyLimit = 1e8 * 10**18;
-    uint256 public maxSellLimit = 1e7 * 10**18;
-    uint256 public maxWalletLimit = 1e9 * 10**18;
+    uint256 public maxBuyLimit = 1e10 * 10**18;
+    uint256 public maxSellLimit = 1e10 * 10**18;
+    uint256 public maxWalletLimit = 1e10 * 10**18;
 
     uint256 public genesis_block;
     uint256 private deadline = 3;
 
     address public deadWallet = 0x000000000000000000000000000000000000dEaD;
-    address public marketingWallet = 0x57cB8175C220cE06841e790D2e5B64ce79c1D2d0;
-    address public DevelopmentWallet = 0x1374905D58e51db15Db132CA0A61590D342764d7;
+    address public marketingWallet = 0x13C534E432564bd964dB340012B6E5C0279Cd0B1;
+    address public AfforestationWallet = 0x186E6e4c484baaa02C9E3A62589d791A7cE5F226; // Afforestation Wallet for tackling climate crisis
     uint256 public constant MAX_SUPPLY = 1e10 * 10**_decimals;
     
     // State variables
@@ -173,8 +177,8 @@ contract IUCN is Context, IBEP20, Ownable {
         uint256 Development;
     }
 
-    Taxes public taxes = Taxes(0, 3, 1, 0);
-    Taxes public sellTaxes = Taxes(1, 3, 0, 0);
+    Taxes public taxes = Taxes(0, 3, 2, 4);
+    Taxes public sellTaxes = Taxes(0, 3, 2, 4);
     Taxes private launchtax = Taxes(0, 99, 0, 0);
 
     struct TotFeesPaidStruct {
@@ -226,7 +230,7 @@ contract IUCN is Context, IBEP20, Ownable {
         _isExcludedFromFee[address(this)] = true;
         _isExcludedFromFee[owner()] = true;
         _isExcludedFromFee[marketingWallet] = true;
-        _isExcludedFromFee[DevelopmentWallet] = true;
+        _isExcludedFromFee[AfforestationWallet] = true;
         _isExcludedFromFee[deadWallet] = true;
 
         emit Transfer(address(0), owner(), _tTotal);
@@ -746,7 +750,7 @@ contract IUCN is Context, IBEP20, Ownable {
 
         uint256 DevelopmentAmt = unitBalance * 2 * temp.Development;
         if (DevelopmentAmt > 0) {
-            payable(DevelopmentWallet).sendValue(DevelopmentAmt);
+            payable(AfforestationWallet).sendValue(DevelopmentAmt);
         }
     }
 
@@ -794,9 +798,9 @@ contract IUCN is Context, IBEP20, Ownable {
         marketingWallet = newWallet;
     }
 
-    function updateDevelopmentWallet(address newWallet) external onlyOwner {
+    function updateAfforestationWallet(address newWallet) external onlyOwner {
         require(newWallet != address(0),"Fee Address cannot be zero address");
-        DevelopmentWallet = newWallet;
+        AfforestationWallet = newWallet;
     }
 
     function updateCooldown(bool state, uint256 time) external onlyOwner {
